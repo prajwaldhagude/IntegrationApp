@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: springboot-task
+    env: java
+    buildCommand: ./mvnw clean package -DskipTests
+    startCommand: java -jar target/SpringBoot-Task-0.0.1-SNAPSHOT.jar
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: RABBITMQ_HOST
+        fromService:
+          type: rabbitmq
+          name: rabbitmq-service
+          property: host
+      - key: RABBITMQ_PORT
+        fromService:
+          type: rabbitmq
+          name: rabbitmq-service
+          property: port
+      - key: RABBITMQ_USERNAME
+        fromService:
+          type: rabbitmq
+          name: rabbitmq-service
+          property: username
+      - key: RABBITMQ_PASSWORD
+        fromService:
+          type: rabbitmq
+          name: rabbitmq-service
+          property: password
+
+  - type: rabbitmq
+    name: rabbitmq-service
+    plan: free
+
